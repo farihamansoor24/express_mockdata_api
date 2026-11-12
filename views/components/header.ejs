@@ -1,0 +1,27 @@
+<!-- views/partials/header.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dummy Data API</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        burgundyDark: '#2c0b0d',    /* Rich Dark Background */
+                        burgundyMain: '#59171b',    /* Deep Burgundy */
+                        cardBurgundy: '#3f1114',    /* Card/Container Background */
+                        beigeAccent: '#fed7b8'      /* Soft Rose Gold / Beige Accent */
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-burgundyDark text-[#fed7b8]/90 min-h-screen flex flex-col font-sans selection:bg-beigeAccent selection:text-burgundyDark">

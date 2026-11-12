@@ -1,0 +1,303 @@
+<!-- views/docs.ejs -->
+<%- include('components/header') %>
+<%- include('components/navbar') %>
+
+<main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="hidden lg:block lg:col-span-1 space-y-4 sticky top-24 self-start">
+            <div class="bg-cardBurgundy border border-burgundyMain/50 rounded-2xl p-4 shadow-md">
+                <h3 class="text-xs font-semibold uppercase tracking-wider text-rose-100/60 mb-3 px-2">API Reference</h3>
+                <nav class="space-y-1">
+                    <a href="#overview" class="block px-3 py-2 rounded-xl text-sm font-medium text-beigeAccent bg-beigeAccent/10">Overview</a>
+                    <a href="#pagination" class="block px-3 py-2 rounded-xl text-sm font-medium text-rose-100/80 hover:bg-burgundyMain hover:text-white transition-colors">Pagination Guide</a>
+                    <a href="#posts" class="block px-3 py-2 rounded-xl text-sm font-medium text-rose-100/80 hover:bg-burgundyMain hover:text-white transition-colors">Posts API</a>
+                    <a href="#products" class="block px-3 py-2 rounded-xl text-sm font-medium text-rose-100/80 hover:bg-burgundyMain hover:text-white transition-colors">Products API</a>
+                    <a href="#users" class="block px-3 py-2 rounded-xl text-sm font-medium text-rose-100/80 hover:bg-burgundyMain hover:text-white transition-colors">Users API</a>
+                    <a href="#recipes" class="block px-3 py-2 rounded-xl text-sm font-medium text-rose-100/80 hover:bg-burgundyMain hover:text-white transition-colors">Recipes API</a>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Documentation Content -->
+        <div class="lg:col-span-3 space-y-12">
+            
+            <!-- Overview Section -->
+            <section id="overview" class="bg-cardBurgundy border border-burgundyMain/50 rounded-2xl p-6 sm:p-8 shadow-md">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-beigeAccent/10 border border-beigeAccent/20 text-beigeAccent text-xs font-semibold mb-4">
+                    Getting Started
+                </div>
+                <h1 class="text-3xl font-extrabold text-white mb-4">API Documentation Portal</h1>
+                <p class="text-rose-100/70 mb-6 leading-relaxed">
+                    Welcome to the MockAPI Hub documentation. All endpoints return standard JSON responses directly from MongoDB and support pagination. No API key or authentication is required.
+                </p>
+                <div class="bg-burgundyDark border border-burgundyMain/60 rounded-xl p-4 font-mono text-sm text-beigeAccent flex items-center justify-between">
+                    <div>Base URL: <span id="dynamic-base-url" class="text-rose-100">http://localhost:3000/api</span></div>
+                    <button onclick="copyText(document.getElementById('dynamic-base-url').innerText, this)" class="text-xs bg-burgundyMain hover:bg-beigeAccent hover:text-burgundyDark text-rose-100 px-3 py-1.5 rounded-lg transition-colors">
+                        Copy URL
+                    </button>
+                </div>
+            </section>
+
+            <!-- Pagination Guide Section -->
+            <section id="pagination" class="bg-cardBurgundy border border-burgundyMain/50 rounded-2xl p-6 sm:p-8 space-y-4 shadow-md">
+                <h2 class="text-xl font-bold text-white">Pagination & Query Parameters</h2>
+                <p class="text-rose-100/70 text-sm">
+                    By default, collection endpoints return <code class="text-beigeAccent bg-burgundyDark px-1.5 py-0.5 rounded">10</code> items. Use <code class="text-beigeAccent bg-burgundyDark px-1.5 py-0.5 rounded">limit</code> and <code class="text-beigeAccent bg-burgundyDark px-1.5 py-0.5 rounded">skip</code> query parameters to paginate through results.
+                </p>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-rose-100/80 border border-burgundyMain/50 rounded-xl overflow-hidden">
+                        <thead class="bg-burgundyDark text-beigeAccent text-xs uppercase">
+                            <tr>
+                                <th class="px-4 py-3">Parameter</th>
+                                <th class="px-4 py-3">Type</th>
+                                <th class="px-4 py-3">Default</th>
+                                <th class="px-4 py-3">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-burgundyMain/40">
+                            <tr>
+                                <td class="px-4 py-3 font-mono text-beigeAccent">limit</td>
+                                <td class="px-4 py-3">Number</td>
+                                <td class="px-4 py-3 font-mono">10</td>
+                                <td class="px-4 py-3">Maximum number of items to return</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-3 font-mono text-beigeAccent">skip</td>
+                                <td class="px-4 py-3">Number</td>
+                                <td class="px-4 py-3 font-mono">0</td>
+                                <td class="px-4 py-3">Number of items to skip from the start</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Helper template logic for the 4 categories -->
+            <% 
+            const categories = [
+                {
+                    id: 'posts',
+                    title: 'Posts Endpoints',
+                    icon: 'fa-newspaper',
+                    descAll: 'Returns a paginated list of blog posts with title, body, tags, and reactions.',
+                    descSingle: 'Returns a single post matched by its numeric ID.',
+                    endpointAll: '/api/posts',
+                    endpointSingle: '/api/posts/1',
+                    sampleResponse: `{
+  "posts": [
+    {
+      "id": 1,
+      "title": "His mother had always taught him",
+      "body": "His mother had always taught him not to ever think of himself as better than others...",
+      "tags": ["history", "american", "crime"],
+      "reactions": { "likes": 192, "dislikes": 25 }
+    }
+  ],
+  "total": 15,
+  "skip": 0,
+  "limit": 10
+}`
+                },
+                {
+                    id: 'products',
+                    title: 'Products Endpoints',
+                    icon: 'fa-box',
+                    descAll: 'Returns a paginated list of e-commerce products with pricing, ratings, and categories.',
+                    descSingle: 'Returns a single product object matched by its numeric ID.',
+                    endpointAll: '/api/products',
+                    endpointSingle: '/api/products/1',
+                    sampleResponse: `{
+  "products": [
+    {
+      "id": 1,
+      "title": "Essence Mascara Lash Princess",
+      "price": 9.99,
+      "category": "beauty",
+      "rating": 4.94
+    }
+  ],
+  "total": 15,
+  "skip": 0,
+  "limit": 10
+}`
+                },
+                {
+                    id: 'users',
+                    title: 'Users Endpoints',
+                    icon: 'fa-users',
+                    descAll: 'Returns a paginated list of mock user profiles with name, email, age, and role.',
+                    descSingle: 'Returns a single user profile matched by its numeric ID.',
+                    endpointAll: '/api/users',
+                    endpointSingle: '/api/users/1',
+                    sampleResponse: `{
+  "users": [
+    {
+      "id": 1,
+      "firstName": "Emily",
+      "lastName": "Johnson",
+      "email": "emily.johnson@x.dummyjson.com",
+      "age": 28
+    }
+  ],
+  "total": 15,
+  "skip": 0,
+  "limit": 10
+}`
+                },
+                {
+                    id: 'recipes',
+                    title: 'Recipes Endpoints',
+                    icon: 'fa-utensils',
+                    descAll: 'Returns a paginated list of cooking recipes with ingredients, instructions, and prep time.',
+                    descSingle: 'Returns a single recipe matched by its numeric ID.',
+                    endpointAll: '/api/recipes',
+                    endpointSingle: '/api/recipes/1',
+                    sampleResponse: `{
+  "recipes": [
+    {
+      "id": 1,
+      "name": "Classic Margherita Pizza",
+      "cuisine": "Italian",
+      "prepTimeMinutes": 20,
+      "rating": 4.6
+    }
+  ],
+  "total": 15,
+  "skip": 0,
+  "limit": 10
+}`
+                }
+            ];
+            %>
+
+            <% categories.forEach(cat => { %>
+            <section id="<%= cat.id %>" class="bg-cardBurgundy border border-burgundyMain/50 rounded-2xl p-6 sm:p-8 space-y-6 shadow-md">
+                <div class="flex items-center justify-between border-b border-burgundyMain/50 pb-4">
+                    <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid <%= cat.icon %> text-beigeAccent text-lg"></i> <%= cat.title %>
+                    </h2>
+                    <span class="px-3 py-1 rounded-full bg-beigeAccent/10 text-beigeAccent text-xs font-semibold border border-beigeAccent/20">REST / GET</span>
+                </div>
+
+                <!-- 1. Get All Endpoint -->
+                <div class="space-y-4">
+                    <div class="flex flex-wrap items-center justify-between gap-3 bg-burgundyDark p-3 rounded-xl border border-burgundyMain/60 font-mono text-sm">
+                        <div class="flex items-center gap-3">
+                            <span class="px-2 py-1 rounded bg-beigeAccent/20 text-beigeAccent font-bold text-xs">GET</span>
+                            <span class="text-rose-100"><%= cat.endpointAll %></span>
+                        </div>
+                        <button onclick="testEndpoint('<%= cat.endpointAll %>?limit=2', 'output-<%= cat.id %>-all', this)" class="px-3 py-1.5 rounded-lg bg-beigeAccent text-burgundyDark font-sans font-bold text-xs hover:opacity-90 transition-opacity cursor-pointer">
+                            ▶ Try it now
+                        </button>
+                    </div>
+                    <p class="text-rose-100/70 text-sm"><%= cat.descAll %></p>
+
+                    <!-- Live Output Box (Hidden until clicked) -->
+                    <div id="output-<%= cat.id %>-all" class="hidden space-y-2">
+                        <div class="flex items-center justify-between text-xs text-emerald-400 font-semibold">
+                            <span>Live API Response (200 OK):</span>
+                            <button onclick="document.getElementById('output-<%= cat.id %>-all').classList.add('hidden')" class="text-rose-100/50 hover:text-white">Close ✕</button>
+                        </div>
+                        <pre class="bg-black/40 p-4 rounded-xl border border-emerald-500/30 text-xs text-emerald-300 max-h-64 overflow-y-auto font-mono"></pre>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <!-- Code Example -->
+                        <div class="relative">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-semibold text-rose-100/60">Fetch Example (JavaScript)</span>
+                                <button onclick="copyCodeBlock(this)" class="text-xs text-beigeAccent hover:underline">Copy</button>
+                            </div>
+                            <pre class="bg-burgundyDark p-4 rounded-xl border border-burgundyMain/60 text-xs text-beigeAccent overflow-x-auto font-mono"><code>fetch('<span class="origin-url">http://localhost:3000</span><%= cat.endpointAll %>')
+  .then(res => res.json())
+  .then(data => console.log(data));</code></pre>
+                        </div>
+                        <!-- Sample Response -->
+                        <div>
+                            <span class="text-xs font-semibold text-rose-100/60 mb-2 block">Sample JSON Response</span>
+                            <pre class="bg-burgundyDark p-4 rounded-xl border border-burgundyMain/60 text-xs text-rose-100/80 overflow-x-auto font-mono max-h-44"><code><%= cat.sampleResponse %></code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Get Single by ID Endpoint -->
+                <div class="pt-6 border-t border-burgundyMain/50 space-y-4">
+                    <div class="flex flex-wrap items-center justify-between gap-3 bg-burgundyDark p-3 rounded-xl border border-burgundyMain/60 font-mono text-sm">
+                        <div class="flex items-center gap-3">
+                            <span class="px-2 py-1 rounded bg-beigeAccent/20 text-beigeAccent font-bold text-xs">GET</span>
+                            <span class="text-rose-100"><%= cat.endpointAll %>/:id</span>
+                        </div>
+                        <button onclick="testEndpoint('<%= cat.endpointSingle %>', 'output-<%= cat.id %>-single', this)" class="px-3 py-1.5 rounded-lg bg-burgundyMain text-beigeAccent border border-beigeAccent/30 font-sans font-semibold text-xs hover:bg-beigeAccent hover:text-burgundyDark transition-colors cursor-pointer">
+                            ▶ Try <%= cat.endpointSingle %>
+                        </button>
+                    </div>
+                    <p class="text-rose-100/70 text-sm"><%= cat.descSingle %></p>
+
+                    <!-- Live Output Box for Single ID -->
+                    <div id="output-<%= cat.id %>-single" class="hidden space-y-2">
+                        <div class="flex items-center justify-between text-xs text-emerald-400 font-semibold">
+                            <span>Live API Response (200 OK):</span>
+                            <button onclick="document.getElementById('output-<%= cat.id %>-single').classList.add('hidden')" class="text-rose-100/50 hover:text-white">Close ✕</button>
+                        </div>
+                        <pre class="bg-black/40 p-4 rounded-xl border border-emerald-500/30 text-xs text-emerald-300 max-h-64 overflow-y-auto font-mono"></pre>
+                    </div>
+                </div>
+            </section>
+            <% }) %>
+
+        </div>
+    </div>
+</main>
+
+<!-- Interactive Script for Live API Testing & Copy Buttons -->
+<script>
+    // Dynamically update localhost URLs to current host (works on localhost & Vercel)
+    document.addEventListener('DOMContentLoaded', () => {
+        const origin = window.location.origin;
+        const baseEl = document.getElementById('dynamic-base-url');
+        if (baseEl) baseEl.innerText = `${origin}/api`;
+
+        document.querySelectorAll('.origin-url').forEach(el => {
+            el.innerText = origin;
+        });
+    });
+
+    // Copy plain text helper
+    function copyText(text, btn) {
+        navigator.clipboard.writeText(text);
+        const originalText = btn.innerText;
+        btn.innerText = 'Copied!';
+        setTimeout(() => btn.innerText = originalText, 1500);
+    }
+
+    // Copy code block helper
+    function copyCodeBlock(btn) {
+        const code = btn.parentElement.nextElementSibling.innerText;
+        copyText(code, btn);
+    }
+
+    // Live Fetch Tester
+    async function testEndpoint(url, outputContainerId, btn) {
+        const container = document.getElementById(outputContainerId);
+        const pre = container.querySelector('pre');
+        const originalBtnText = btn.innerText;
+
+        btn.innerText = 'Loading...';
+        container.classList.remove('hidden');
+        pre.innerText = 'Fetching data from MongoDB...';
+
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            pre.innerText = JSON.stringify(data, null, 2);
+        } catch (err) {
+            pre.innerText = JSON.stringify({ error: 'Failed to fetch data', message: err.message }, null, 2);
+        } finally {
+            btn.innerText = originalBtnText;
+        }
+    }
+</script>
+
+<%- include('components/footer') %>
